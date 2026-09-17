@@ -1,6 +1,6 @@
 # ChurnLens
 
-ChurnLens is an end-to-end, explainability-first customer churn decisioning project. It trains a model, serves risk and local drivers through FastAPI, and gives retention stakeholders a focused Streamlit view instead of a raw probability dump.
+ChurnLens is an end-to-end, explainability-first customer churn decisioning project. It trains a model, serves risk and local drivers through FastAPI, and gives retention stakeholders a focused GitHub Pages view instead of a raw probability dump.
 
 ## What is included
 
