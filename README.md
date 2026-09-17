@@ -1,11 +1,12 @@
 # ChurnLens
 
-ChurnLens is an end-to-end, explainability-first customer churn decisioning project. It trains a model, serves risk and local drivers through FastAPI, and gives retention stakeholders a focused GitHub Pages view instead of a raw probability dump.
+ChurnLens is an end-to-end telecom customer churn propensity project. It joins subscriber, usage, recharge, and complaints signals, applies a business-driven inactivity label, and gives retention stakeholders a focused GitHub Pages view instead of a raw probability dump.
 
 ## What is included
 
-- Deterministic synthetic customer data for a zero-credential quick start, with an obvious seam for replacing it with governed production data.
-- Reproducible scikit-learn pipeline: imputation, scaling, one-hot encoding, class-balanced logistic regression, and holdout metrics.
+- Deterministic telecom demo data representing subscriber, usage, recharge, and complaint tables for a zero-credential quick start.
+- Behavioral feature engineering across tenure, revenue, usage intensity, recharge recency, failed payments, and complaints.
+- Tuned Logistic Regression and Random Forest candidates with cross-validation, ROC AUC, average precision, Brier score, and KS evaluation.
 - Local explanations based on standardized model contributions relative to a reference population.
 - FastAPI endpoint with schema validation and health check.
 - Static GitHub Pages stakeholder tool that pairs risk with plain-language action and evidence.
@@ -25,7 +26,7 @@ Open `docs/index.html` directly for the static stakeholder experience, or serve 
 
 ## Production path
 
-Replace `make_synthetic_customers` with a versioned feature view, persist the model and metrics in an artifact registry, add data drift and calibration monitoring, and require human review for retention actions. The application intentionally frames predictions as prioritization signals rather than automatic customer decisions.
+Replace `make_synthetic_telecom_data` with governed subscriber, usage, recharge, and complaints extracts joined at the subscriber and observation-window grain. Define the production label as no recharge or usage for 30 consecutive days after the observation window, persist the model and metrics in an artifact registry, add data drift and calibration monitoring, and require human review for retention actions. The application intentionally frames predictions as prioritization signals rather than automatic customer decisions.
 
 ## Deploy with GitHub
 

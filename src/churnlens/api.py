@@ -4,15 +4,18 @@ from pydantic import BaseModel, Field
 from .service import ChurnService
 
 
-class Customer(BaseModel):
+class TelecomSubscriber(BaseModel):
     tenure_months: int = Field(ge=0, le=120)
-    monthly_charges: float = Field(ge=0, le=500)
-    support_tickets_90d: int = Field(ge=0, le=50)
-    late_payments_12m: int = Field(ge=0, le=12)
+    monthly_revenue: float = Field(ge=0, le=500)
+    data_usage_gb_30d: float = Field(ge=0, le=500)
+    voice_minutes_30d: float = Field(ge=0, le=5000)
+    recharge_count_30d: int = Field(ge=0, le=100)
+    recharge_amount_30d: float = Field(ge=0, le=1000)
+    complaint_count_90d: int = Field(ge=0, le=50)
+    payment_failures_90d: int = Field(ge=0, le=30)
+    last_recharge_days: int = Field(ge=0, le=365)
     contract_type: str
-    internet_service: str
-    payment_method: str
-    has_streaming: int = Field(ge=0, le=1)
+    region: str
     auto_pay: int = Field(ge=0, le=1)
 
 
@@ -26,5 +29,5 @@ def health() -> dict:
 
 
 @app.post("/v1/score")
-def score(customer: Customer) -> dict:
+def score(customer: TelecomSubscriber) -> dict:
     return service.score(customer.model_dump())

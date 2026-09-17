@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="ChurnLens explainable customer retention decision support">
-  <title>ChurnLens | Retention intelligence</title>
+  <meta name="description" content="ChurnLens explainable telecom customer churn propensity">
+  <title>ChurnLens | Telecom retention intelligence</title>
   <style>
     :root { --ink:#17252f; --muted:#60717a; --paper:#f5f7f3; --card:#fff; --line:#dce4df; --teal:#0e6b69; --coral:#df765c; --navy:#163947; }
     * { box-sizing:border-box; } body { margin:0; color:var(--ink); background:var(--paper); font:15px/1.5 Georgia, serif; }
@@ -21,20 +21,21 @@
 <body>
   <main class="shell">
     <header><div class="brand"><span class="mark">C</span> CHURNLENS</div><div class="status"><i></i>Decision support, not automatic action</div></header>
-    <section class="intro"><div class="eyebrow">Retention intelligence</div><h1>Make the next customer conversation count.</h1><p>Explore a churn signal, understand what shaped it, and give your team a grounded starting point for a human conversation.</p></section>
+    <section class="intro"><div class="eyebrow">Telecom churn propensity</div><h1>Make the next customer conversation count.</h1><p>Explore a probability-based churn segment, understand which subscriber behaviors shaped it, and give your team a grounded starting point for proactive engagement.</p></section>
     <section class="workspace">
       <form class="panel" id="profile-form">
-        <h2>Customer profile</h2>
+        <h2>Subscriber profile</h2>
         <label for="tenure">Tenure (months)</label><input id="tenure" type="number" min="0" max="120" value="8">
-        <div class="two"><div><label for="charges">Monthly charges</label><input id="charges" type="number" min="0" max="500" value="88"></div><div><label for="tickets">Tickets / 90 days</label><input id="tickets" type="number" min="0" max="50" value="2"></div></div>
-        <div class="two"><div><label for="late">Late payments / year</label><input id="late" type="number" min="0" max="12" value="1"></div><div><label for="contract">Contract</label><select id="contract"><option>month-to-month</option><option>one-year</option><option>two-year</option></select></div></div>
-        <label for="internet">Internet service</label><select id="internet"><option>fiber</option><option>dsl</option><option>none</option></select>
-        <label for="payment">Payment method</label><select id="payment"><option>electronic-check</option><option>bank-transfer</option><option>credit-card</option><option>mailed-check</option></select>
-        <label class="switch"><input id="streaming" type="checkbox" checked> Has streaming</label><label class="switch"><input id="autopay" type="checkbox"> Uses auto-pay</label>
+        <div class="two"><div><label for="revenue">Monthly revenue</label><input id="revenue" type="number" min="0" max="500" value="88"></div><div><label for="usage">Data GB / 30 days</label><input id="usage" type="number" min="0" max="500" value="16"></div></div>
+        <div class="two"><div><label for="voice">Voice minutes / 30 days</label><input id="voice" type="number" min="0" max="5000" value="180"></div><div><label for="recharges">Recharges / 30 days</label><input id="recharges" type="number" min="0" max="100" value="2"></div></div>
+        <div class="two"><div><label for="rechargeamount">Recharge amount</label><input id="rechargeamount" type="number" min="0" max="1000" value="45"></div><div><label for="lastrecharge">Days since recharge</label><input id="lastrecharge" type="number" min="0" max="365" value="12"></div></div>
+        <div class="two"><div><label for="complaints">Complaints / 90 days</label><input id="complaints" type="number" min="0" max="50" value="1"></div><div><label for="failures">Payment failures</label><input id="failures" type="number" min="0" max="30" value="0"></div></div>
+        <div class="two"><div><label for="contract">Contract</label><select id="contract"><option>month-to-month</option><option>one-year</option><option>two-year</option></select></div><div><label for="region">Region</label><select id="region"><option>north</option><option>south</option><option>east</option><option>west</option></select></div></div>
+        <label class="switch"><input id="autopay" type="checkbox"> Uses auto-pay</label>
         <button type="submit">EXPLAIN RISK</button>
       </form>
       <div>
-        <div class="summary"><section class="risk"><small>ESTIMATED CHURN RISK</small><strong id="probability">--</strong><b id="band">Waiting for profile</b><p id="recommendation">Complete the profile to see a recommended next step.</p></section><section class="panel evidence"><h2>What is driving this score?</h2><p class="sub">Relative contribution compared with a typical customer.</p><div id="drivers"></div></section></div>
+        <div class="summary"><section class="risk"><small>ESTIMATED CHURN PROPENSITY</small><strong id="probability">--</strong><b id="band">Waiting for profile</b><p id="recommendation">Complete the profile to see a recommended next step.</p></section><section class="panel evidence"><h2>What is driving this score?</h2><p class="sub">Behavioral contribution compared with a typical subscriber.</p><div id="drivers"></div></section></div>
         <div class="context"><strong>Decision context</strong><br>This is a prioritization signal, not an eligibility, pricing, or service decision. Validate the evidence with customer context and monitor retention outcomes.</div>
       </div>
     </section>
@@ -43,11 +44,11 @@
   <script>
     const $ = id => document.getElementById(id);
     const score = event => { event.preventDefault();
-      const c = { tenure:+$('tenure').value, charges:+$('charges').value, tickets:+$('tickets').value, late:+$('late').value, contract:$('contract').value, internet:$('internet').value, payment:$('payment').value, streaming:$('streaming').checked, autopay:$('autopay').checked };
+      const c = { tenure:+$('tenure').value, revenue:+$('revenue').value, usage:+$('usage').value, voice:+$('voice').value, recharges:+$('recharges').value, rechargeAmount:+$('rechargeamount').value, complaints:+$('complaints').value, failures:+$('failures').value, lastRecharge:+$('lastrecharge').value, contract:$('contract').value, autopay:$('autopay').checked };
       const drivers = [
-        ['Short tenure', -0.035 * (c.tenure - 36)], ['Monthly charges', 0.018 * (c.charges - 72)], ['Support tickets', 0.22 * (c.tickets - 1.2)], ['Late payments', 0.42 * (c.late - .54)], ['Month-to-month contract', c.contract === 'month-to-month' ? .95 : c.contract === 'one-year' ? -.25 : -.55], ['Fiber service', c.internet === 'fiber' ? .30 : 0], ['Electronic check', c.payment === 'electronic-check' ? .25 : 0], ['Auto-pay', c.autopay ? -.65 : .25], ['Streaming', c.streaming ? .25 : 0]
+        ['Short tenure', -0.035 * (c.tenure - 36)], ['High monthly revenue', 0.012 * (c.revenue - 72)], ['Low data usage', -0.035 * (c.usage - 16)], ['Low voice usage', -0.0008 * (c.voice - 180)], ['Few recharges', -0.18 * (c.recharges - 2.5)], ['Recharge value', -0.012 * (c.rechargeAmount - 45)], ['Complaints', 0.38 * (c.complaints - .8)], ['Payment failures', 0.45 * (c.failures - .48)], ['Recharge recency', 0.035 * (c.lastRecharge - 30)], ['Month-to-month contract', c.contract === 'month-to-month' ? .95 : c.contract === 'one-year' ? -.25 : -.55], ['Auto-pay', c.autopay ? -.65 : .25]
       ].filter(item => item[1] !== 0).sort((a,b) => Math.abs(b[1]) - Math.abs(a[1])).slice(0,5);
-      const logit = .55 - .035*c.tenure + .018*c.charges + .22*c.tickets + .42*c.late + (c.contract === 'month-to-month' ? .95 : 0) + (c.internet === 'fiber' ? .30 : 0) + (c.payment === 'electronic-check' ? .25 : 0) + (c.streaming ? .25 : 0) - (c.autopay ? .65 : 0);
+      const logit = -.30 - .035*c.tenure + .012*c.revenue - .035*c.usage - .0008*c.voice - .18*c.recharges - .012*c.rechargeAmount + .38*c.complaints + .45*c.failures + .035*c.lastRecharge + (c.contract === 'month-to-month' ? .95 : 0) - (c.autopay ? .65 : 0);
       const probability = 1 / (1 + Math.exp(-logit)); const riskBand = probability >= .7 ? 'High risk' : probability >= .45 ? 'Medium risk' : 'Low risk';
       $('probability').textContent = `${Math.round(probability*100)}%`; $('band').textContent = riskBand;
       $('recommendation').textContent = probability >= .7 ? 'Prioritize a personal retention call and contract review.' : probability >= .45 ? 'Offer targeted support and an auto-pay or plan-value nudge.' : 'Continue regular engagement; no urgent intervention is indicated.';

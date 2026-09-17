@@ -9,7 +9,8 @@ def explain_prediction(model, customer: dict, baseline: pd.DataFrame) -> dict:
     probability = float(model.predict_proba(row)[:, 1][0])
     transformed = model.named_steps["preprocess"].transform(row)
     baseline_transformed = model.named_steps["preprocess"].transform(baseline)
-    coefficients = model.named_steps["model"].coef_[0]
+    estimator = model.named_steps["model"]
+    coefficients = estimator.coef_[0] if hasattr(estimator, "coef_") else estimator.feature_importances_
     baseline_vector = np.asarray(baseline_transformed.mean(axis=0)).ravel()
     row_vector = np.asarray(transformed.toarray() if hasattr(transformed, "toarray") else transformed).ravel()
     contribution = (row_vector - baseline_vector) * coefficients
