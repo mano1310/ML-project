@@ -1,0 +1,2 @@
+[console_scripts]
+churnlens-train = churnlens.train:main

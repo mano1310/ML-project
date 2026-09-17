@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ChurnLens explainable customer retention decision support">
+  <title>ChurnLens | Retention intelligence</title>
+  <style>
+    :root { --ink:#17252f; --muted:#60717a; --paper:#f5f7f3; --card:#fff; --line:#dce4df; --teal:#0e6b69; --coral:#df765c; --navy:#163947; }
+    * { box-sizing:border-box; } body { margin:0; color:var(--ink); background:var(--paper); font:15px/1.5 Georgia, serif; }
+    .shell { max-width:1200px; margin:auto; padding:28px 28px 56px; } header { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--line); padding-bottom:20px; }
+    .brand { display:flex; gap:12px; align-items:center; font:700 20px Arial, sans-serif; letter-spacing:.02em; } .mark { width:34px; height:34px; display:grid; place-items:center; background:var(--coral); color:#fff; border-radius:50%; font-weight:bold; }
+    .status { font:12px Arial,sans-serif; color:var(--teal); } .status i { display:inline-block; width:8px; height:8px; background:#4a9f76; border-radius:50%; margin-right:6px; }
+    .intro { padding:58px 0 34px; max-width:780px; } .eyebrow { color:var(--coral); font:700 12px Arial,sans-serif; letter-spacing:.16em; text-transform:uppercase; } h1 { font-size:clamp(42px,6vw,76px); line-height:.98; font-weight:400; margin:13px 0 18px; letter-spacing:0; } .intro p { color:var(--muted); font-size:19px; max-width:650px; margin:0; }
+    .workspace { display:grid; grid-template-columns:350px 1fr; gap:22px; align-items:start; } .panel { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:24px; } .panel h2 { font:700 16px Arial,sans-serif; margin:0 0 20px; } label { display:block; font:700 11px Arial,sans-serif; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin:15px 0 6px; } input,select { width:100%; border:1px solid #c8d5d0; border-radius:4px; background:#fff; color:var(--ink); padding:10px 11px; font:15px Georgia,serif; } input:focus,select:focus { outline:2px solid #9dc8c1; border-color:var(--teal); } .two { display:grid; grid-template-columns:1fr 1fr; gap:12px; } .switch { display:flex; align-items:center; gap:9px; font:14px Arial,sans-serif; margin-top:16px; color:var(--ink); } .switch input { width:auto; accent-color:var(--teal); } button { width:100%; margin-top:22px; padding:13px 16px; border:0; border-radius:4px; background:var(--teal); color:#fff; cursor:pointer; font:700 13px Arial,sans-serif; letter-spacing:.04em; } button:hover { background:#084f4e; }
+    .summary { display:grid; grid-template-columns:250px 1fr; gap:22px; } .risk { min-height:250px; background:var(--navy); color:#fff; padding:26px; border-radius:8px; display:flex; flex-direction:column; justify-content:space-between; } .risk small { font:700 11px Arial,sans-serif; letter-spacing:.13em; color:#a9c8c5; } .risk strong { font:400 64px Georgia,serif; line-height:1; } .risk b { font:700 13px Arial,sans-serif; color:#f1b29f; } .risk p { margin:0; color:#d8e3e0; font-size:14px; }
+    .evidence { padding:5px 0; } .evidence h2 { margin:0 0 6px; } .sub { color:var(--muted); margin:0 0 17px; } .driver { display:grid; grid-template-columns:1fr auto; gap:16px; padding:14px 15px; margin:8px 0; border-left:4px solid var(--coral); background:#fffaf6; font-size:15px; } .driver.down { border-color:#62a895; background:#f4faf7; } .impact { font:700 13px Arial,sans-serif; color:var(--coral); } .down .impact { color:#32806d; } .context { margin-top:22px; padding:20px 22px; border-top:1px solid var(--line); color:var(--muted); } .context strong { color:var(--ink); font:700 13px Arial,sans-serif; }
+    footer { margin-top:44px; color:var(--muted); font:12px Arial,sans-serif; display:flex; justify-content:space-between; gap:20px; } @media (max-width:800px) { .shell { padding:20px 16px 40px; } header { align-items:flex-start; } .status { text-align:right; max-width:130px; } .workspace,.summary { grid-template-columns:1fr; } .intro { padding:42px 0 28px; } h1 { font-size:48px; } }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header><div class="brand"><span class="mark">C</span> CHURNLENS</div><div class="status"><i></i>Decision support, not automatic action</div></header>
+    <section class="intro"><div class="eyebrow">Retention intelligence</div><h1>Make the next customer conversation count.</h1><p>Explore a churn signal, understand what shaped it, and give your team a grounded starting point for a human conversation.</p></section>
+    <section class="workspace">
+      <form class="panel" id="profile-form">
+        <h2>Customer profile</h2>
+        <label for="tenure">Tenure (months)</label><input id="tenure" type="number" min="0" max="120" value="8">
+        <div class="two"><div><label for="charges">Monthly charges</label><input id="charges" type="number" min="0" max="500" value="88"></div><div><label for="tickets">Tickets / 90 days</label><input id="tickets" type="number" min="0" max="50" value="2"></div></div>
+        <div class="two"><div><label for="late">Late payments / year</label><input id="late" type="number" min="0" max="12" value="1"></div><div><label for="contract">Contract</label><select id="contract"><option>month-to-month</option><option>one-year</option><option>two-year</option></select></div></div>
+        <label for="internet">Internet service</label><select id="internet"><option>fiber</option><option>dsl</option><option>none</option></select>
+        <label for="payment">Payment method</label><select id="payment"><option>electronic-check</option><option>bank-transfer</option><option>credit-card</option><option>mailed-check</option></select>
+        <label class="switch"><input id="streaming" type="checkbox" checked> Has streaming</label><label class="switch"><input id="autopay" type="checkbox"> Uses auto-pay</label>
+        <button type="submit">EXPLAIN RISK</button>
+      </form>
+      <div>
+        <div class="summary"><section class="risk"><small>ESTIMATED CHURN RISK</small><strong id="probability">--</strong><b id="band">Waiting for profile</b><p id="recommendation">Complete the profile to see a recommended next step.</p></section><section class="panel evidence"><h2>What is driving this score?</h2><p class="sub">Relative contribution compared with a typical customer.</p><div id="drivers"></div></section></div>
+        <div class="context"><strong>Decision context</strong><br>This is a prioritization signal, not an eligibility, pricing, or service decision. Validate the evidence with customer context and monitor retention outcomes.</div>
+      </div>
+    </section>
+    <footer><span>ChurnLens · transparent baseline model</span><span>Static GitHub Pages experience</span></footer>
+  </main>
+  <script>
+    const $ = id => document.getElementById(id);
+    const score = event => { event.preventDefault();
+      const c = { tenure:+$('tenure').value, charges:+$('charges').value, tickets:+$('tickets').value, late:+$('late').value, contract:$('contract').value, internet:$('internet').value, payment:$('payment').value, streaming:$('streaming').checked, autopay:$('autopay').checked };
+      const drivers = [
+        ['Short tenure', -0.035 * (c.tenure - 36)], ['Monthly charges', 0.018 * (c.charges - 72)], ['Support tickets', 0.22 * (c.tickets - 1.2)], ['Late payments', 0.42 * (c.late - .54)], ['Month-to-month contract', c.contract === 'month-to-month' ? .95 : c.contract === 'one-year' ? -.25 : -.55], ['Fiber service', c.internet === 'fiber' ? .30 : 0], ['Electronic check', c.payment === 'electronic-check' ? .25 : 0], ['Auto-pay', c.autopay ? -.65 : .25], ['Streaming', c.streaming ? .25 : 0]
+      ].filter(item => item[1] !== 0).sort((a,b) => Math.abs(b[1]) - Math.abs(a[1])).slice(0,5);
+      const logit = .55 - .035*c.tenure + .018*c.charges + .22*c.tickets + .42*c.late + (c.contract === 'month-to-month' ? .95 : 0) + (c.internet === 'fiber' ? .30 : 0) + (c.payment === 'electronic-check' ? .25 : 0) + (c.streaming ? .25 : 0) - (c.autopay ? .65 : 0);
+      const probability = 1 / (1 + Math.exp(-logit)); const riskBand = probability >= .7 ? 'High risk' : probability >= .45 ? 'Medium risk' : 'Low risk';
+      $('probability').textContent = `${Math.round(probability*100)}%`; $('band').textContent = riskBand;
+      $('recommendation').textContent = probability >= .7 ? 'Prioritize a personal retention call and contract review.' : probability >= .45 ? 'Offer targeted support and an auto-pay or plan-value nudge.' : 'Continue regular engagement; no urgent intervention is indicated.';
+      $('drivers').innerHTML = drivers.map(([name, impact]) => `<div class="driver ${impact < 0 ? 'down' : ''}"><span><b>${name}</b> ${impact > 0 ? 'raises' : 'lowers'} risk</span><span class="impact">${impact > 0 ? '+' : ''}${impact.toFixed(2)}</span></div>`).join('');
+    }; $('profile-form').addEventListener('submit', score); score({preventDefault(){}});
+  </script>
+</body>
+</html>

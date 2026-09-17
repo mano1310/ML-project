@@ -1,0 +1,17 @@
+Metadata-Version: 2.4
+Name: churnlens
+Version: 0.1.0
+Summary: Explainable customer churn decisioning platform
+Requires-Python: >=3.10
+Requires-Dist: fastapi<1,>=0.115
+Requires-Dist: joblib<2,>=1.4
+Requires-Dist: numpy<3,>=1.26
+Requires-Dist: pandas<3,>=2.2
+Requires-Dist: pydantic<3,>=2.8
+Requires-Dist: scikit-learn<2,>=1.5
+Requires-Dist: streamlit<2,>=1.39
+Requires-Dist: uvicorn[standard]<1,>=0.30
+Provides-Extra: dev
+Requires-Dist: httpx<1,>=0.27; extra == "dev"
+Requires-Dist: pytest<9,>=8.3; extra == "dev"
+Requires-Dist: ruff<1,>=0.6; extra == "dev"
